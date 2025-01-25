@@ -1,4 +1,4 @@
-name: Deplegar en desarrollo
+name: Desplegar en desarrollo
 
 on:
   push:  
@@ -9,6 +9,6 @@ jobs:
     runs-on: vps
     steps:
       - run: echo "🐧 El job esta corriendo en ${{ runner.os }}!"
-      # - name: Clonar reporsitorio
-      #   uses: actions/checkout@v4
-      # - run: docker build -f Dockerfile.dev -t spa_gestion_dominios_dev:latest .
+      - name: Clonar reporsitorio
+        uses: actions/checkout@v4
+      - run: docker build -t api_autenticacion_dev:latest .
