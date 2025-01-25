@@ -12,3 +12,4 @@ jobs:
       - name: Clonar reporsitorio
         uses: actions/checkout@v4
       - run: docker build -t api_autenticacion:latest -t api_autenticacion:$(date +%F_%H-%M-%S) .
+      - run: cd ~/DockerCompose_SistemaDominios && docker stop api_autenticacion && docker remove api_autenticacion && docker-compose -f docker-compose.yml up -d api_autenticacion
