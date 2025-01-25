@@ -1,0 +1,14 @@
+name: Deplegar en produccion
+
+on:
+  push:  
+    branches: [master]
+
+jobs:
+  CI-CD:
+    runs-on: vps
+    steps:
+      - run: echo "🐧 El job esta corriendo en ${{ runner.os }}!"
+      # - name: Clonar reporsitorio
+      #   uses: actions/checkout@v4
+      # - run: docker build -t spa_gestion_dominios:latest .
