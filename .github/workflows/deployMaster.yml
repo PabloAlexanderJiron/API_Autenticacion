@@ -11,4 +11,4 @@ jobs:
       - run: echo "🐧 El job esta corriendo en ${{ runner.os }}!"
       - name: Clonar reporsitorio
         uses: actions/checkout@v4
-      - run: docker build -t api_autenticacion:latest .
+      - run: docker build -t api_autenticacion:latest -t api_autenticacion:$(date +%F_%H-%M-%S) .
