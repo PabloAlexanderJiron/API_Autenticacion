@@ -52,6 +52,7 @@ namespace API_Autenticacion.Controllers
         {
             var claims = new[]
             {
+
                 new Claim("id", datos.Id.ToString()),
                 new Claim("email", datos.Email),
             };
