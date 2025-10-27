@@ -4,6 +4,7 @@ using API_Autenticacion.Servicios;
 using Aplicacion;
 using Aplicacion.Helper.Servicios;
 using dotenv.net;
+using DotNetEnv;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -12,7 +13,10 @@ using OpenTelemetry.Metrics;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
-DotEnv.Load();
+//DotEnv.Load();
+Env.Load();
+Console.WriteLine("SECRETO_JWT: " + Environment.GetEnvironmentVariable("SECRETO_JWT"));
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("*", 
@@ -30,6 +34,17 @@ builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+});
+var secret = Environment.GetEnvironmentVariable("SECRETO_JWT");
+if (string.IsNullOrEmpty(secret))
+{
+    throw new Exception("La variable SECRETO_JWT no está configurada en Program.cs");
+}
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 })
 .AddJwtBearer(options =>
 {
@@ -39,9 +54,10 @@ builder.Services.AddAuthentication(options =>
         ValidateAudience = false,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("SECRETO_JWT")!))
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret))
     };
 });
+
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "API Autenticacion", Version = "v1" });

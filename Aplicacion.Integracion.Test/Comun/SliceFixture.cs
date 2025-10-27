@@ -27,7 +27,9 @@ namespace Aplicacion.Integracion.Test.Comun
 
         public SliceFixture()
         {
+            Environment.SetEnvironmentVariable("SECRETO_JWT","NoLeDiganANadieEsteSecretoSinoTendranMalaSuerteParaSiempreSaludos");
             factory = new AplicacionFactory();
+          
 
             configuration = factory.Services.GetRequiredService<IConfiguration>();
             scopeFactory = factory.Services.GetRequiredService<IServiceScopeFactory>();
