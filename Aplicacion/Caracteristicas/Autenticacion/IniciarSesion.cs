@@ -35,6 +35,7 @@ namespace Aplicacion.Caracteristicas.Autenticacion
             }
             public async Task<UsuarioDTO> Handle(Comando request, CancellationToken cancellationToken)
             {
+                // metodo para validar si usuario y contraseña son correctos
                 var usuario = await contextoDB.Usuario.FirstOrDefaultAsync(x => x.Email == request.Datos.Email!.Trim().ToLower());
                 usuario.ThrowIfNull(() => new ErroresUsuario.CredencialesIncorrectas());
                 usuario.Throw(()=> new ErroresUsuario.CredencialesIncorrectas())

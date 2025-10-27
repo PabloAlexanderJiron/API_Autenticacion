@@ -10,7 +10,7 @@ using System.Text;
 
 namespace API_Autenticacion.Controllers
 {
-    public class AutenticacionController:ApiBaseController
+    public class AutenticacionController : ApiBaseController
     {
         private readonly IConfiguration configuration;
 
@@ -52,25 +52,30 @@ namespace API_Autenticacion.Controllers
         {
             var claims = new[]
             {
+        new Claim("id", datos.Id.ToString()),
+        new Claim("email", datos.Email),
+    };
 
-                new Claim("id", datos.Id.ToString()),
-                new Claim("email", datos.Email),
-            };
+            var secret = Environment.GetEnvironmentVariable("SECRETO_JWT");
+            if (string.IsNullOrEmpty(secret))
+            {
+                throw new Exception("SECRETO_JWT no está configurado en AutenticacionController");
+            }
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["SECRETO_JWT"]!));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             var expiration = DateTime.UtcNow.AddDays(5);
 
-
-            JwtSecurityToken token = new JwtSecurityToken(
-               issuer: null,
-               audience: null,
-               claims: claims,
-               expires: expiration,
-               signingCredentials: creds
+            var token = new JwtSecurityToken(
+                issuer: null,
+                audience: null,
+                claims: claims,
+                expires: expiration,
+                signingCredentials: creds
             );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+
     }
 }
