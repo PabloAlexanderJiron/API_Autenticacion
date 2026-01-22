@@ -114,10 +114,11 @@ app.UseSwagger();
 app.UseSwaggerUI();
 app.SemillaDataIncial();
 app.UseOpenTelemetryPrometheusScrapingEndpoint();
+app.UseCors("*");
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseMiddleware<ExcepcionMiddleware>();
-app.UseCors("*");
+//app.UseCors("*");
 app.MapControllers();
 
 app.Run();
