@@ -118,7 +118,7 @@ app.UseCors("*");
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseMiddleware<ExcepcionMiddleware>();
-//app.UseCors("*");
+//app.UseCors("*")dfdfd;
 app.MapControllers();
 
 app.Run();
